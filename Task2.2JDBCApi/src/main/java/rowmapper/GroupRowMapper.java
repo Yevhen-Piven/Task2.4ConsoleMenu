@@ -7,11 +7,10 @@ import entity.Group;
 public class GroupRowMapper implements RowMapper<Group> {
 
     @Override
-    public Group mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Group mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         Group group = new Group();
-        group.setGroupId(rs.getInt("group_id"));
-        group.setGroupName(rs.getString("group_name"));
+        group.setGroupId(resultSet.getInt("group_id"));
+        group.setGroupName(resultSet.getString("group_name"));
         return group;
     }
-
 }
