@@ -1,14 +1,11 @@
 package dao;
 
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import entity.Course;
 import rowmapper.CourseRowMapper;
-import rowmapper.RowMapper;
 
 @Repository
 public class CourseDaoJdbc implements CourseDao {
@@ -20,8 +17,7 @@ public class CourseDaoJdbc implements CourseDao {
     private static final String INSERT_COURSE_QUERY = "INSERT INTO school.courses (course_id, course_name, course_description) VALUES (?, ?, ?)";
     private static final String UPDATE_COURSE_QUERY = "UPDATE school.courses SET course_name=?, course_description=? WHERE course_id=?";
     private static final String DELETE_COURSE_QUERY = "DELETE FROM school.courses WHERE course_id=?";
-    private final RowMapper<Course> courseRowMapper = new CourseRowMapper();
-
+    
     public CourseDaoJdbc(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -34,7 +30,7 @@ public class CourseDaoJdbc implements CourseDao {
 
     @Override
     public Course findById(int id) {
-        return jdbcTemplate.queryForObject(SELECT_COURSE_BY_ID_QUERY, courseRowMapper, id);
+        return jdbcTemplate.queryForObject(SELECT_COURSE_BY_ID_QUERY, new CourseRowMapper(), id);
     }
 
     @Override

@@ -2,6 +2,7 @@ package rowmapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 import entity.Group;
 
 public class GroupRowMapper implements RowMapper<Group> {

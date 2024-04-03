@@ -2,6 +2,7 @@ package rowmapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 import entity.Course;
 
 public class CourseRowMapper implements RowMapper<Course> {

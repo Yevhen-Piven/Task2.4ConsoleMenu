@@ -3,19 +3,15 @@ package dao;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import entity.Course;
 import entity.Student;
-import rowmapper.CourseRowMapper;
-import rowmapper.GroupRowMapper;
 import rowmapper.StudentRowMapper;
 
 @Repository
 public class StudentDaoJdbc implements StudentDao {
     public static final String INSERT = "INSERT INTO school.students (student_id,group_id, first_name, last_name) VALUES (?, ?, ?,?)";
-    public static final String FIND_BY_ID = "SELECT * FROM school.students WHERE id = ?";
+    public static final String FIND_BY_ID = "SELECT * FROM school.students WHERE student_id = ?";
     public static final String FIND_ALL = "SELECT * FROM school.students";
-    public static final String DELETE = "DELETE FROM school.students WHERE id = ?";
+    public static final String DELETE = "DELETE FROM school.students, school.student_courses WHERE student_id = ?";
     public static final String UPDATE = "UPDATE school.students SET group_id =?, first_name = ?, last_name = ? WHERE student_id = ?";
     private final JdbcTemplate jdbcTemplate;
 
@@ -49,5 +45,4 @@ public class StudentDaoJdbc implements StudentDao {
     public void delete(int id) {
         jdbcTemplate.update(DELETE, id);
     }
-
 }

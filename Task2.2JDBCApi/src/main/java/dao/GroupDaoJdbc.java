@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import entity.Group;
 import rowmapper.GroupRowMapper;
-import rowmapper.RowMapper;
 
 @Repository
 public class GroupDaoJdbc implements GroupDao {
@@ -28,8 +27,8 @@ public class GroupDaoJdbc implements GroupDao {
     }
 
     @Override
-    public Group findById(int id) {
-        return jdbcTemplate.queryForObject(SELECT_GROUP_BY_ID, new GroupRowMapper(), id);
+    public Group findById(long id) {
+        return jdbcTemplate.queryForObject(SELECT_GROUP_BY_ID,  new GroupRowMapper(),id);
     }
 
     @Override

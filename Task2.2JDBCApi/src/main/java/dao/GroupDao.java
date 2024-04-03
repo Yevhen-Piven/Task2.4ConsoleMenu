@@ -6,7 +6,7 @@ import entity.Group;
 public interface GroupDao {
     void save(Group student);
 
-    Group findById(int id);
+    Group findById(long id);
 
     List<Group> findAll();
 
