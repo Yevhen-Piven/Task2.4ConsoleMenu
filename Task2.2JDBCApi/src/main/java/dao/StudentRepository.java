@@ -2,12 +2,13 @@ package dao;
 
 import java.util.List;
 import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import entity.Student;
 import rowmapper.StudentRowMapper;
 
 @Repository
-public class StudentDaoJdbc implements StudentDao {
+public class StudentRepository implements StudentDao {
     public static final String INSERT = "INSERT INTO school.students (student_id,group_id, first_name, last_name) VALUES (?, ?, ?,?)";
     public static final String FIND_BY_ID = "SELECT * FROM school.students WHERE student_id = ?";
     public static final String FIND_ALL = "SELECT * FROM school.students";
@@ -15,7 +16,8 @@ public class StudentDaoJdbc implements StudentDao {
     public static final String UPDATE = "UPDATE school.students SET group_id =?, first_name = ?, last_name = ? WHERE student_id = ?";
     private final JdbcTemplate jdbcTemplate;
 
-    public StudentDaoJdbc(JdbcTemplate jdbcTemplate) {
+    @Autowired
+    public StudentRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

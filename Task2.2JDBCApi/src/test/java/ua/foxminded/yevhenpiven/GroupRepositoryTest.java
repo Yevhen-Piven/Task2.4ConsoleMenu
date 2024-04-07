@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import dao.GroupDao;
-import dao.GroupDaoJdbc;
+import dao.GroupRepository;
 import entity.Group;
 import rowmapper.GroupRowMapper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 @Sql(scripts = { "/sql/clear_tables.sql",
         "/sql/sample_data.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 
-class GroupDaoJdbcTest {
+class GroupRepositoryTest {
     public static final String INSERT = "SELECT COUNT(*) FROM school.group WHERE course_id = ?";
     public static final String SELECT = "SELECT * FROM school.group WHERE course_id = ?";
     public static final String INSERT_INTO = "INSERT INTO students (student_id, group_id, first_name, last_name) VALUES (?, ?, ?, ?)";
@@ -36,7 +36,7 @@ class GroupDaoJdbcTest {
 
     @BeforeEach
     void setUp() {
-        groupDao = new GroupDaoJdbc(jdbcTemplate);
+        groupDao = new GroupRepository(jdbcTemplate);
     }
 
     @Test

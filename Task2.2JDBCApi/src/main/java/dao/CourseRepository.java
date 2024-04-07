@@ -8,19 +8,19 @@ import entity.Course;
 import rowmapper.CourseRowMapper;
 
 @Repository
-public class CourseDaoJdbc implements CourseDao {
+public class CourseRepository implements CourseDao {
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public CourseRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     private static final String SELECT_ALL = "SELECT * FROM school.courses";
     private static final String SELECT_COURSE_BY_ID_QUERY = "SELECT * FROM school.courses WHERE course_id=?";
     private static final String INSERT_COURSE_QUERY = "INSERT INTO school.courses (course_id, course_name, course_description) VALUES (?, ?, ?)";
     private static final String UPDATE_COURSE_QUERY = "UPDATE school.courses SET course_name=?, course_description=? WHERE course_id=?";
     private static final String DELETE_COURSE_QUERY = "DELETE FROM school.courses WHERE course_id=?";
-    
-    public CourseDaoJdbc(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     @Override
     public void save(Course course) {

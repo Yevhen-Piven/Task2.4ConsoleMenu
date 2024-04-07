@@ -8,16 +8,17 @@ import entity.Group;
 import rowmapper.GroupRowMapper;
 
 @Repository
-public class GroupDaoJdbc implements GroupDao {
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+public class GroupRepository implements GroupDao {
+
     private static final String SELECT_ALL = "SELECT * FROM school.groups";
     private static final String SELECT_GROUP_BY_ID = "SELECT * FROM school.groups WHERE group_id=?";
     private static final String INSERT_GROUP_QUERY = "INSERT INTO school.groups (group_id, group_name) VALUES (?, ?)";
     private static final String UPDATE_GROUP_QUERY = "UPDATE school.groups SET group_name=? WHERE group_id=?";
     private static final String DELETE_GROUP_QUERY = "DELETE FROM school.groups WHERE group_id=?";
+    private final JdbcTemplate jdbcTemplate;
 
-    public GroupDaoJdbc(JdbcTemplate jdbcTemplate) {
+    @Autowired
+    public GroupRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -28,7 +29,7 @@ public class GroupDaoJdbc implements GroupDao {
 
     @Override
     public Group findById(long id) {
-        return jdbcTemplate.queryForObject(SELECT_GROUP_BY_ID,  new GroupRowMapper(),id);
+        return jdbcTemplate.queryForObject(SELECT_GROUP_BY_ID, new GroupRowMapper(), id);
     }
 
     @Override

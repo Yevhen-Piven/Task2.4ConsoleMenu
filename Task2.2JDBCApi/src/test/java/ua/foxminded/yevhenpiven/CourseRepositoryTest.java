@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import dao.CourseDao;
-import dao.CourseDaoJdbc;
+import dao.CourseRepository;
 import entity.Course;
 import rowmapper.CourseRowMapper;
 
@@ -21,7 +21,7 @@ import rowmapper.CourseRowMapper;
 @Sql(scripts = { "/sql/clear_tables.sql",
         "/sql/sample_data.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 
-class CourseDaoJdbcTest {
+class CourseRepositoryTest {
     public static final String INSERT = "SELECT COUNT(*) FROM school.courses WHERE course_id = ?";
     public static final String SELECT = "SELECT * FROM school.courses WHERE course_id = ?";
     public static final String TEST_COURSE_NAME = "CourseName";
@@ -34,7 +34,7 @@ class CourseDaoJdbcTest {
 
     @BeforeEach
     void setUp() {
-        courseDao = new CourseDaoJdbc(jdbcTemplate);
+        courseDao = new CourseRepository(jdbcTemplate);
     }
 
     @Test

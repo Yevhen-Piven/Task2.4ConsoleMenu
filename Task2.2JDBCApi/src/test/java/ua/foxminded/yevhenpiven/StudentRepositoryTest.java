@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import dao.StudentDao;
-import dao.StudentDaoJdbc;
+import dao.StudentRepository;
 import entity.Student;
 import rowmapper.StudentRowMapper;
 
@@ -20,7 +20,7 @@ import rowmapper.StudentRowMapper;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Sql(scripts = { "/sql/clear_tables.sql",
         "/sql/sample_data.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-class StudentDaoJdbcTest {
+class StudentRepositoryTest {
     public static final String INSERT = "SELECT COUNT(*) FROM school.students WHERE student_id = ?";
     public static final String SELECT = "SELECT * FROM school.students WHERE student_id = ?";
     public static final String INSERT_INTO = "INSERT INTO school.students (student_id, group_id, first_name, last_name) VALUES (?, ?, ?, ?)";
@@ -35,7 +35,7 @@ class StudentDaoJdbcTest {
 
     @BeforeEach
     void setUp() {
-        studentDao = new StudentDaoJdbc(jdbcTemplate);
+        studentDao = new StudentRepository(jdbcTemplate);
     }
 
     @Test
