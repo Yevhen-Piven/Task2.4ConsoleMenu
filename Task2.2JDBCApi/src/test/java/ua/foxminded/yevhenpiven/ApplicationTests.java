@@ -1,4 +1,4 @@
-package ua.foxminded.yevhenpiven.Task2.JDBCApi;
+package ua.foxminded.yevhenpiven;
 
 import static org.junit.Assert.assertNotNull;
 import org.junit.jupiter.api.Test;
