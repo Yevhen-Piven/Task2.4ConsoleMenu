@@ -29,7 +29,7 @@ public class CourseRepository implements CourseDao {
     @Override
     public void save(Course course) {
         jdbcTemplate.update(INSERT_COURSE_QUERY, course.getCourseId(), course.getCourseName(),
-                course.getCourseDescription());
+                course.getCourseDescription(),course.getInterval());
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CourseRepository implements CourseDao {
     @Transactional
     @Override
     public void update(Course course) {
-        jdbcTemplate.update(UPDATE_COURSE_QUERY, course.getCourseName(), course.getCourseDescription(),
+        jdbcTemplate.update(UPDATE_COURSE_QUERY, course.getCourseName(), course.getCourseDescription(),course.getInterval(),
                 course.getCourseId());
     }
 

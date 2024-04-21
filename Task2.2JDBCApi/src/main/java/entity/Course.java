@@ -11,4 +11,5 @@ public class Course {
     private int courseId;
     private String courseName;
     private String courseDescription;
+    private String interval;
 }

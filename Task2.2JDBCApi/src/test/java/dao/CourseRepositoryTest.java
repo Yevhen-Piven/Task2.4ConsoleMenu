@@ -29,6 +29,7 @@ class CourseRepositoryTest {
     public static final String SELECT = "SELECT * FROM school.courses WHERE course_id = ?";
     public static final String TEST_COURSE_NAME = "CourseName";
     public static final String TEST_COURSE_DESCRIPTION = "Description_test";
+    public static final String TEST_INTERVAL = "2 days 3 hours 30 minutes";
     public static final int TEST_COURSE_ID = 11;
 
     @Autowired
@@ -42,7 +43,7 @@ class CourseRepositoryTest {
 
     @Test
     public void testSave() {
-        Course course = new Course(TEST_COURSE_ID, TEST_COURSE_NAME, TEST_COURSE_DESCRIPTION);
+        Course course = new Course(TEST_COURSE_ID, TEST_COURSE_NAME, TEST_COURSE_DESCRIPTION, TEST_INTERVAL);
         courseDao.save(course);
         int count = jdbcTemplate.queryForObject(INSERT, Integer.class, TEST_COURSE_ID);
         assertEquals(1, count);
@@ -55,6 +56,7 @@ class CourseRepositoryTest {
         assertEquals(TEST_COURSE_ID, foundCourse.getCourseId());
         assertEquals(TEST_COURSE_NAME, foundCourse.getCourseName());
         assertEquals(TEST_COURSE_DESCRIPTION, foundCourse.getCourseDescription());
+        assertEquals(TEST_INTERVAL, foundCourse.getInterval());
     }
 
     @Test
@@ -66,6 +68,7 @@ class CourseRepositoryTest {
         assertEquals(TEST_COURSE_ID, testCourse.getCourseId());
         assertEquals(TEST_COURSE_NAME, testCourse.getCourseName());
         assertEquals(TEST_COURSE_DESCRIPTION, testCourse.getCourseDescription());
+        assertEquals(TEST_INTERVAL, testCourse.getInterval());
     }
 
     @Test
@@ -74,6 +77,7 @@ class CourseRepositoryTest {
         updatedCourse.setCourseId(TEST_COURSE_ID);
         updatedCourse.setCourseName(TEST_COURSE_NAME);
         updatedCourse.setCourseDescription(TEST_COURSE_DESCRIPTION);
+        updatedCourse.setInterval(TEST_INTERVAL);
         courseDao.update(updatedCourse);
         Course testCourse = jdbcTemplate.queryForObject(SELECT, new CourseRowMapper(), updatedCourse.getCourseId());
         assertNotNull(testCourse);

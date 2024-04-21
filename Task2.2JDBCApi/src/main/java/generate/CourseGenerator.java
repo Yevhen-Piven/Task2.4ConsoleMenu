@@ -13,12 +13,13 @@ public class CourseGenerator implements Generator<Course> {
     private String fileDescriptions = "descriptions.txt";
     private List<Course> courses = new ArrayList<>();
     private StringReader<String> stringReader = new StringReader<>();
+    public static final String INTERVAL = "2 days 3 hours 30 minutes";
 
     @Override
     public List<Course> generate(int number) throws ReaderException {
         for (int i = 0; i < number; i++) {
             courses.add(new Course(i + 1, stringReader.read(fileFacultets).get(i),
-                    stringReader.read(fileDescriptions).get(i)));
+                    stringReader.read(fileDescriptions).get(i), INTERVAL));
         }
         return courses;
     }

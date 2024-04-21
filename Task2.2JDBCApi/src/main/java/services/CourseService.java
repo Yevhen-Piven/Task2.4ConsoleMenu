@@ -18,7 +18,7 @@ import rowmapper.CourseRowMapper;
 public class CourseService {
     private static final String SELECT_ALL = "SELECT * FROM school.courses";
     private static final String SELECT_COURSE_BY_ID_QUERY = "SELECT * FROM school.courses WHERE course_id=?";
-    private static final String UPDATE_COURSE_QUERY = "UPDATE school.courses SET course_name=?, course_description=? WHERE course_id=?";
+    private static final String UPDATE_COURSE_QUERY = "UPDATE school.courses SET course_name=?, course_description=?,interval=? WHERE course_id=?";
     private static final String DELETE_COURSE_QUERY = "DELETE FROM school.courses WHERE course_id=?";
     private final JdbcTemplate jdbcTemplate;
 
@@ -46,12 +46,23 @@ public class CourseService {
 
     @Transactional
     public void update(Course course) {
-        jdbcTemplate.update(UPDATE_COURSE_QUERY, course.getCourseName(), course.getCourseDescription(),
+        jdbcTemplate.update(UPDATE_COURSE_QUERY, course.getCourseName(), course.getCourseDescription(),course.getInterval(),
                 course.getCourseId());
     }
 
     @Transactional
     public void delete(int course_id) {
         jdbcTemplate.update(DELETE_COURSE_QUERY, course_id);
+    }
+
+    @Transactional
+    public String timeRemaining(int studentId, int courseId) throws DAOException {
+        Course course = courseDao.findById(courseId);
+        if (course != null) {
+            String enrollmentTime = course.getInterval();
+            return enrollmentTime;
+        } else {
+            throw new DAOException("Course with ID " + courseId + " not found");
+        }
     }
 }

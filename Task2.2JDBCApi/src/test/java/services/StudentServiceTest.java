@@ -1,9 +1,11 @@
 package services;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,6 +34,7 @@ class StudentServiceTest {
     private static final int TEST_SECOND_STUDENT_GROUP_ID = 2;
     private static final int TEST_STUDENT_GROUP_ID = 1;
     private static final int TEST_STUDENT_COURSE_ID = 1;
+    public static final boolean TEST_ACTIVE = true;
     private static final String TEST_COURSE_NAME = "CourseName 1";
     private static final String TEST_STUDENT_NAME = "StudentName 1";
     private static final String TEST_STUDENT_SURNAME = "StudentSurName 1";
@@ -40,14 +43,14 @@ class StudentServiceTest {
     public static final String FIND_BY_ID = "SELECT * FROM school.students WHERE student_id = ?";
     public static final String FIND_ALL = "SELECT * FROM school.students";
     public static final String DELETE = "DELETE FROM school.students, school.student_courses WHERE student_id = ?";
-    public static final String UPDATE = "UPDATE school.students SET group_id =?, first_name = ?, last_name = ? WHERE student_id = ?";
+    public static final String UPDATE = "UPDATE school.students SET group_id =?, first_name = ?, last_name = ?, active=? WHERE student_id = ?";
 
     @MockBean
-    StudentDao studentDao;
-    StudentRepository studentRepository;
+    private StudentDao studentDao;
+    private StudentRepository studentRepository;
 
     @Autowired
-    StudentService studentService;
+    private StudentService studentService;
 
     @BeforeEach
     public void setUp() {
@@ -57,9 +60,10 @@ class StudentServiceTest {
     @Test
     public void testSave() throws SQLException, DAOException, ServiceException {
         List<Student> testData = new ArrayList<>();
-        testData.add(new Student(TEST_STUDENT_ID, TEST_STUDENT_GROUP_ID, TEST_STUDENT_NAME, TEST_STUDENT_SURNAME));
+        testData.add(new Student(TEST_STUDENT_ID, TEST_STUDENT_GROUP_ID, TEST_STUDENT_NAME, TEST_STUDENT_SURNAME,
+                TEST_ACTIVE));
         testData.add(new Student(TEST_SECOND_STUDENT_ID, TEST_SECOND_STUDENT_GROUP_ID, TEST_SECOND_STUDENT_NAME,
-                TEST_SECOND_STUDENT_SURNAME));
+                TEST_SECOND_STUDENT_SURNAME, TEST_ACTIVE));
         studentService.save(testData);
 
         for (Student student : testData) {
@@ -88,7 +92,8 @@ class StudentServiceTest {
 
     @Test
     public void testAddStudent() {
-        Student student = new Student(TEST_STUDENT_ID, TEST_STUDENT_GROUP_ID, TEST_STUDENT_NAME, TEST_STUDENT_SURNAME);
+        Student student = new Student(TEST_STUDENT_ID, TEST_STUDENT_GROUP_ID, TEST_STUDENT_NAME, TEST_STUDENT_SURNAME,
+                TEST_ACTIVE);
         studentService.addStudent(student);
         verify(studentRepository).addStudent(student);
     }
@@ -106,7 +111,7 @@ class StudentServiceTest {
     public void testFindById() {
         JdbcTemplate jdbcTemplateMock = mock(JdbcTemplate.class);
         Student expectedStudent = new Student(TEST_STUDENT_ID, TEST_STUDENT_GROUP_ID, TEST_STUDENT_NAME,
-                TEST_STUDENT_SURNAME);
+                TEST_STUDENT_SURNAME, TEST_ACTIVE);
         when(jdbcTemplateMock.queryForObject(eq(FIND_BY_ID), any(StudentRowMapper.class), eq(TEST_STUDENT_ID)))
                 .thenReturn(expectedStudent);
         Student actualStudent = studentService.findById(TEST_STUDENT_ID);
@@ -119,9 +124,10 @@ class StudentServiceTest {
         JdbcTemplate jdbcTemplateMock = mock(JdbcTemplate.class);
         StudentDao studentDao = mock(StudentDao.class);
         List<Student> testStudents = new ArrayList<>();
-        testStudents.add(new Student(TEST_STUDENT_ID, TEST_STUDENT_GROUP_ID, TEST_STUDENT_NAME, TEST_STUDENT_SURNAME));
+        testStudents.add(new Student(TEST_STUDENT_ID, TEST_STUDENT_GROUP_ID, TEST_STUDENT_NAME, TEST_STUDENT_SURNAME,
+                TEST_ACTIVE));
         testStudents.add(new Student(TEST_SECOND_STUDENT_ID, TEST_SECOND_STUDENT_GROUP_ID, TEST_SECOND_STUDENT_NAME,
-                TEST_SECOND_STUDENT_SURNAME));
+                TEST_SECOND_STUDENT_SURNAME, TEST_ACTIVE));
         when(jdbcTemplateMock.query(FIND_ALL, new StudentRowMapper())).thenReturn(testStudents);
         List<Student> result = studentDao.findAll();
 
@@ -134,7 +140,8 @@ class StudentServiceTest {
     public void testUpdate() {
         JdbcTemplate jdbcTemplateMock = mock(JdbcTemplate.class);
         StudentDao studentDao = mock(StudentDao.class);
-        Student student = new Student(TEST_STUDENT_ID, TEST_STUDENT_GROUP_ID, TEST_STUDENT_NAME, TEST_STUDENT_SURNAME);
+        Student student = new Student(TEST_STUDENT_ID, TEST_STUDENT_GROUP_ID, TEST_STUDENT_NAME, TEST_STUDENT_SURNAME,
+                TEST_ACTIVE);
         studentDao.update(student);
         verify(jdbcTemplateMock).update(UPDATE, TEST_STUDENT_ID, TEST_STUDENT_GROUP_ID, TEST_STUDENT_NAME,
                 TEST_STUDENT_SURNAME);
@@ -146,5 +153,15 @@ class StudentServiceTest {
         StudentDao studentDao = mock(StudentDao.class);
         studentDao.delete(TEST_STUDENT_ID);
         verify(jdbcTemplateMock).update(DELETE, TEST_STUDENT_ID);
+    }
+
+    @Test
+    public void testExpelStudent() throws DAOException {
+        Student student = new Student(TEST_STUDENT_ID, TEST_STUDENT_GROUP_ID, TEST_STUDENT_NAME, TEST_STUDENT_SURNAME,
+                TEST_ACTIVE);
+        when(studentRepository.findById(TEST_STUDENT_ID)).thenReturn(student);
+        studentService.expelStudent(TEST_STUDENT_ID);
+        assertFalse(student.isActive());
+        verify(studentRepository, times(1)).update(student);
     }
 }

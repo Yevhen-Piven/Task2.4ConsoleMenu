@@ -76,4 +76,15 @@ public class StudentService {
     public void delete(int id) {
         jdbcTemplate.update(DELETE, id);
     }
+
+    @Transactional
+    public void expelStudent(int studentId) throws DAOException {
+        Student student = studentRepository.findById(studentId);
+        if (student != null) {
+            student.setActive(false);
+            studentRepository.update(student);
+        } else {
+            throw new DAOException("Student with ID " + studentId + " not found");
+        }
+    }
 }

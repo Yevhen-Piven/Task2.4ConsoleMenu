@@ -35,11 +35,11 @@ class GroupServiceTest {
     private static final String TEST_QUERY_DELETE = "DELETE FROM school.groups WHERE group_id = ?";
 
     @MockBean
-    GroupDao groupDao;
-    JdbcTemplate jdbcTemplate;
+    private GroupDao groupDao;
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    GroupService groupService;
+    private GroupService groupService;
 
     @Test
     public void testSave() throws SQLException, DAOException, ServiceException {

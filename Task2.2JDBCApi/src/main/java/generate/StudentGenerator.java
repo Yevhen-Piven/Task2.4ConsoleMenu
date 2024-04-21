@@ -22,8 +22,9 @@ public class StudentGenerator implements Generator<Student> {
             int random_id_course = random.nextInt(10) + 1;
             int random_id_name = random.nextInt(20);
             int random_id_surname = random.nextInt(20);
+            boolean active = true;
             students.add(new Student(i + 1, random_id_course, stringReader.read(fileNames).get(random_id_name),
-                    stringReader.read(fileSurnames).get(random_id_surname)));
+                    stringReader.read(fileSurnames).get(random_id_surname), active));
         }
         return students;
     }

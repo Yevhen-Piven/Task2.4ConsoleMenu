@@ -26,11 +26,12 @@ import rowmapper.StudentRowMapper;
 class StudentRepositoryTest {
     public static final String INSERT = "SELECT COUNT(*) FROM school.students WHERE student_id = ?";
     public static final String SELECT = "SELECT * FROM school.students WHERE student_id = ?";
-    public static final String INSERT_INTO = "INSERT INTO school.students (student_id, group_id, first_name, last_name) VALUES (?, ?, ?, ?)";
+    public static final String INSERT_INTO = "INSERT INTO school.students (student_id, group_id, first_name, last_name, active) VALUES (?, ?, ?, ?,?)";
     public static final String TEST_STUDENT_NAME = "StudentName";
     public static final String TEST_STUDENT_SURNAME = "StudentSurname";
     public static final int TEST_STUDENT_ID = 201;
     public static final int TEST_STUDENT_ID_GROUP = 1;
+    public static final boolean TEST_ACTIVE = true;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -43,7 +44,8 @@ class StudentRepositoryTest {
 
     @Test
     public void testSaveStudent() {
-        Student student = new Student(TEST_STUDENT_ID, TEST_STUDENT_ID_GROUP, TEST_STUDENT_NAME, TEST_STUDENT_SURNAME);
+        Student student = new Student(TEST_STUDENT_ID, TEST_STUDENT_ID_GROUP, TEST_STUDENT_NAME, TEST_STUDENT_SURNAME,
+                TEST_ACTIVE);
         studentDao.save(student);
         int count = jdbcTemplate.queryForObject(INSERT, Integer.class, TEST_STUDENT_ID);
         assertEquals(1, count);
@@ -79,7 +81,7 @@ class StudentRepositoryTest {
     @Test
     public void testDelete() {
         jdbcTemplate.update(INSERT_INTO, TEST_STUDENT_ID, TEST_STUDENT_ID_GROUP, TEST_STUDENT_NAME,
-                TEST_STUDENT_SURNAME);
+                TEST_STUDENT_SURNAME, TEST_ACTIVE);
 
         Student existingStudent = studentDao.findById(TEST_STUDENT_ID);
         assertEquals(TEST_STUDENT_NAME, existingStudent.getFirstName());

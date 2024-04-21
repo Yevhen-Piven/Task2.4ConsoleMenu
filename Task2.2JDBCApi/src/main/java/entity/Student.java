@@ -12,4 +12,5 @@ public class Student {
     private int groupId;
     private String firstName;
     private String lastName;
+    private boolean active;
 }
