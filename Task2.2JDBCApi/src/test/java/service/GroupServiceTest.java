@@ -1,4 +1,4 @@
-package services;
+package service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -23,6 +23,7 @@ import entity.Group;
 import exception.DAOException;
 import exception.ServiceException;
 import rowmapper.GroupRowMapper;
+import service.GroupService;
 
 @SpringBootTest(classes = { GroupService.class })
 class GroupServiceTest {

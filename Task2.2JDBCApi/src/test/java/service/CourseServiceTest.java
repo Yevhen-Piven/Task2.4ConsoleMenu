@@ -1,4 +1,4 @@
-package services;
+package service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -138,12 +138,12 @@ class CourseServiceTest {
     }
 
     @Test
-    public void testTimeRemaining() throws DAOException {
+    public void testCountTime() throws DAOException {
         String expectedTime = "2 days 3 hours 30 minutes";
         Course course = new Course();
         course.setInterval(expectedTime);
         when(courseDao.findById(TEST_ID)).thenReturn(course);
-        String actualTime = courseService.timeRemaining(STUDENT_TEST_ID, TEST_ID);
+        String actualTime = courseService.countTime(STUDENT_TEST_ID, TEST_ID);
         assertEquals(expectedTime, actualTime);
         verify(courseDao, times(1)).findById(TEST_ID);
     }

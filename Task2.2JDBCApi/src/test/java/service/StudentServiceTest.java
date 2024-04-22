@@ -1,4 +1,4 @@
-package services;
+package service;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,6 +26,7 @@ import entity.Student;
 import exception.DAOException;
 import exception.ServiceException;
 import rowmapper.StudentRowMapper;
+import service.StudentService;
 
 @SpringBootTest(classes = { StudentService.class })
 class StudentServiceTest {

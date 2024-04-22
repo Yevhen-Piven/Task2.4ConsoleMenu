@@ -1,4 +1,4 @@
-package services;
+package service;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -46,8 +46,8 @@ public class CourseService {
 
     @Transactional
     public void update(Course course) {
-        jdbcTemplate.update(UPDATE_COURSE_QUERY, course.getCourseName(), course.getCourseDescription(),course.getInterval(),
-                course.getCourseId());
+        jdbcTemplate.update(UPDATE_COURSE_QUERY, course.getCourseName(), course.getCourseDescription(),
+                course.getInterval(), course.getCourseId());
     }
 
     @Transactional
@@ -56,11 +56,10 @@ public class CourseService {
     }
 
     @Transactional
-    public String timeRemaining(int studentId, int courseId) throws DAOException {
+    public String countTime(int studentId, int courseId) throws DAOException {
         Course course = courseDao.findById(courseId);
         if (course != null) {
-            String enrollmentTime = course.getInterval();
-            return enrollmentTime;
+            return course.getInterval();
         } else {
             throw new DAOException("Course with ID " + courseId + " not found");
         }
